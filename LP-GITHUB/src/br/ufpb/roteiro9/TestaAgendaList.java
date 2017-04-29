@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
  *
  * @author gmnun
  */
-public class TestaAgendaList {
+public class TestaAgendaList{
     public static void main(String[] args) {
         Agenda agenda = new AgendaList();
         agenda.cadastraPessoa(new Pessoa(JOptionPane.showInputDialog("Nome: "), JOptionPane.showInputDialog("Aniversário: ")));
