@@ -2,11 +2,12 @@ package Roteiro10;
 
 import java.util.List;
 import java.util.LinkedList;
+
 /**
  *
  * @author gmnun
  */
-public class SistemaInscricoesList implements SistemaInscricoes{
+public class SistemaInscricoesList implements SistemaInscricoes {
 
     private List<Participante> participantes;
     private List<Minicurso> minicursos;
@@ -20,38 +21,45 @@ public class SistemaInscricoesList implements SistemaInscricoes{
     public List<Minicurso> getMinicursos() {
         return minicursos;
     }
+
     @Override
     public List<Participante> getParticipantes() {
         return participantes;
     }
-    
+
     @Override
-    public void removeParticipante(String email) throws Exception{
+    public void removeParticipante(String email) throws Exception {
         Participante p = pesquisaParticipante(email);
         this.participantes.remove(p);
     }
+
     @Override
-    public void addParticipante(Participante i) throws Exception{
-        Participante x = pesquisaParticipante(i.getEmail());
-        this.participantes.add(i);
-    }
-    @Override
-    public void inscreveParticipanteEmMinicurso(String emailPart, String tituloMinicurso) throws Exception{
-        Participante x = pesquisaParticipante(emailPart);
-        Minicurso o = pesquisarMinicurso(tituloMinicurso);
-        //o.addParticipante(x);
-        for(Minicurso i: this.minicursos){
-            if(i.getTitulo().equals(tituloMinicurso)){
-                i.addParticipante(x);
-                }
-            }
-        
+    public void addParticipante(Participante i) throws Exception {
+        try {
+            Participante x = pesquisaParticipante(i.getEmail());
+            throw new ParticipanteJaExistenteException("Já existe um participante com o e-mail: " + i.getEmail());
+        } catch (ParticipanteNaoExistenteException e) {
+            this.participantes.add(i);
+        }
     }
 
     @Override
-    public Participante pesquisaParticipante(String email) throws Exception{
-        for(Participante i: this.participantes){
-            if(i.getEmail().equals(email)){
+    public void inscreveParticipanteEmMinicurso(String emailPart, String tituloMinicurso) throws Exception {
+        Participante x = pesquisaParticipante(emailPart);
+        Minicurso o = pesquisarMinicurso(tituloMinicurso);
+        //o.addParticipante(x);
+        for (Minicurso i : this.minicursos) {
+            if (i.getTitulo().equals(tituloMinicurso)) {
+                i.addParticipante(x);
+            }
+        }
+
+    }
+
+    @Override
+    public Participante pesquisaParticipante(String email) throws Exception {
+        for (Participante i : this.participantes) {
+            if (i.getEmail().equals(email)) {
                 return i;
             }
         }
@@ -59,10 +67,10 @@ public class SistemaInscricoesList implements SistemaInscricoes{
     }
 
     @Override
-    public List<Participante> pesquisaParticipantesDaInstituicao(String instituicao){
+    public List<Participante> pesquisaParticipantesDaInstituicao(String instituicao) {
         List<Participante> x = new LinkedList<>();
-        for(Participante i: this.participantes){
-            if(i.getInstituicao().equals(instituicao)){
+        for (Participante i : this.participantes) {
+            if (i.getInstituicao().equals(instituicao)) {
                 x.add(i);
             }
         }
@@ -70,32 +78,31 @@ public class SistemaInscricoesList implements SistemaInscricoes{
     }
 
     @Override
-    public List<Participante> pesquisaParticipantesDoEstado(String estado){
+    public List<Participante> pesquisaParticipantesDoEstado(String estado) {
         List<Participante> x = new LinkedList<>();
-        for(Participante i: this.participantes){
-            if(i.getEndereco().getEstado().equals(estado)){
+        for (Participante i : this.participantes) {
+            if (i.getEndereco().getEstado().equals(estado)) {
                 x.add(i);
             }
         }
         return x;
     }
-    
+
     @Override
-    public void addMinicurso(Minicurso i) throws MinicursoJaExisteException{
-        try{
+    public void addMinicurso(Minicurso i) throws MinicursoJaExisteException {
+        try {
             Minicurso j = pesquisarMinicurso(i.getTitulo());
             throw new MinicursoJaExisteException("Já existe minicurso cadastrado com o título: " + i.getTitulo());
-        }
-        catch (MinicursoNaoExisteException e){
+        } catch (MinicursoNaoExisteException e) {
             this.minicursos.add(i);
         }
-        
+
     }
-    
+
     @Override
-    public Minicurso pesquisarMinicurso(String titulo) throws MinicursoNaoExisteException{
-        for(Minicurso i: this.minicursos){
-            if(i.getTitulo().equalsIgnoreCase(titulo)){
+    public Minicurso pesquisarMinicurso(String titulo) throws MinicursoNaoExisteException {
+        for (Minicurso i : this.minicursos) {
+            if (i.getTitulo().equalsIgnoreCase(titulo)) {
                 return i;
             }
         }
@@ -107,5 +114,5 @@ public class SistemaInscricoesList implements SistemaInscricoes{
         List<Participante> nova = this.pesquisarMinicurso(tituloMinicurso).getParticipantes();
         return nova;
     }
-    
+
 }
