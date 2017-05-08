@@ -19,27 +19,36 @@ public class SistemaCtrlE {
                             + "[2] Cadastrar Participante em Minicurso\n[3] Info de Minicurso\n[x] Sair");
                     switch (menuMini) {
                         case "1":
-                            try {
-                                ctrlE.addMinicurso(new Minicurso(JOptionPane.showInputDialog("Título do Minicurso:"), Integer.parseInt(JOptionPane.showInputDialog("Número máximo de participantes:"))));
-                            } catch (MinicursoJaExisteException e) {
-                                JOptionPane.showMessageDialog(null, e.getMessage());
+                            while (true) {
+                                try {
+                                    ctrlE.addMinicurso(new Minicurso(JOptionPane.showInputDialog("Título do Minicurso:"), Integer.parseInt(JOptionPane.showInputDialog("Número máximo de participantes:"))));
+                                    break;
+                                } catch (MinicursoJaExisteException e) {
+                                    JOptionPane.showMessageDialog(null, e.getMessage());
+                                } catch (NumberFormatException e) {
+                                    JOptionPane.showMessageDialog(null, "Você é burro é cara? mandando letra pra um número!");
+                                }
                             }
                             break;
 
                         case "2":
-                            try {
-                                ctrlE.inscreveParticipanteEmMinicurso(JOptionPane.showInputDialog("E-mail do participante:"), JOptionPane.showInputDialog("Título do Minicurso:"));
-                            } catch (ParticipanteJaExistenteException | ParticipanteNaoExistenteException | MinicursoNaoExisteException e) {
-                                JOptionPane.showMessageDialog(null, e.getMessage());
-                            }
+                                try {
+                                    ctrlE.inscreveParticipanteEmMinicurso(JOptionPane.showInputDialog("E-mail do participante:"), JOptionPane.showInputDialog("Título do Minicurso:"));
+                                    
+                                } catch (ParticipanteJaExistenteException | ParticipanteNaoExistenteException | MinicursoNaoExisteException e) {
+                                    JOptionPane.showMessageDialog(null, e.getMessage());
+                                }
                             break;
 
                         case "3":
-                            try {
-                                Minicurso x = ctrlE.pesquisarMinicurso(JOptionPane.showInputDialog("Título do Minicurso:"));
-                                JOptionPane.showMessageDialog(null, "Título: " + x.getTitulo() + "\nNúmero de Participantes: " + x.getParticipantes().size());
-                            } catch (MinicursoNaoExisteException e) {
-                                JOptionPane.showMessageDialog(null, e.getMessage());
+                            while (true) {
+                                try {
+                                    Minicurso x = ctrlE.pesquisarMinicurso(JOptionPane.showInputDialog("Título do Minicurso:"));
+                                    JOptionPane.showMessageDialog(null, "Título: " + x.getTitulo() + "\nNúmero de Participantes: " + x.getParticipantes().size());
+                                    break;
+                                } catch (MinicursoNaoExisteException e) {
+                                    JOptionPane.showMessageDialog(null, e.getMessage());
+                                }
                             }
                             break;
                     }
@@ -50,14 +59,17 @@ public class SistemaCtrlE {
                             + "[2] Participantes do Estado\n[3] Participantes da Instituição\n[4] Pesquisar Participante\n[5] Remover Participante\n[x] Sair");
                     switch (menuPart) {
                         case "1":
-                            try {
-                                ctrlE.addParticipante(new Participante(JOptionPane.showInputDialog("Nome: "),
-                                        JOptionPane.showInputDialog("E-Mail: "),
-                                        JOptionPane.showInputDialog("Instituição: "),
-                                        new Endereco(JOptionPane.showInputDialog("Logradouro: "), JOptionPane.showInputDialog("Cidade: "),
-                                                JOptionPane.showInputDialog("Estado: "), JOptionPane.showInputDialog("Número: "))));
-                            } catch (ParticipanteJaExistenteException e) {
-                                JOptionPane.showMessageDialog(null, e.getMessage());
+                            while (true) {
+                                try {
+                                    ctrlE.addParticipante(new Participante(JOptionPane.showInputDialog("Nome: "),
+                                            JOptionPane.showInputDialog("E-Mail: "),
+                                            JOptionPane.showInputDialog("Instituição: "),
+                                            new Endereco(JOptionPane.showInputDialog("Logradouro: "), JOptionPane.showInputDialog("Cidade: "),
+                                                    JOptionPane.showInputDialog("Estado: "), JOptionPane.showInputDialog("Número: "))));
+                                    break;
+                                } catch (ParticipanteJaExistenteException e) {
+                                    JOptionPane.showMessageDialog(null, e.getMessage());
+                                }
                             }
                             break;
 
@@ -74,19 +86,26 @@ public class SistemaCtrlE {
                             break;
 
                         case "4":
-                            try {
-                                JOptionPane.showMessageDialog(null, ctrlE.pesquisaParticipante(JOptionPane.showInputDialog("E-mail:")).toString());
-                            } catch (ParticipanteNaoExistenteException e) {
-                                JOptionPane.showMessageDialog(null, e.getMessage());
+                            while (true) {
+                                try {
+                                    JOptionPane.showMessageDialog(null, ctrlE.pesquisaParticipante(JOptionPane.showInputDialog("E-mail:")).toString());
+                                    break;
+                                } catch (ParticipanteNaoExistenteException e) {
+                                    JOptionPane.showMessageDialog(null, e.getMessage());
+                                }
                             }
                             break;
 
                         case "5":
-                            try {
-                                ctrlE.removeParticipante(JOptionPane.showInputDialog("E-mail:"));
-                            } catch (ParticipanteNaoExistenteException e) {
-                                JOptionPane.showMessageDialog(null, e.getMessage());
+                            while (true) {
+                                try {
+                                    ctrlE.removeParticipante(JOptionPane.showInputDialog("E-mail:"));
+                                    break;
+                                } catch (ParticipanteNaoExistenteException e) {
+                                    JOptionPane.showMessageDialog(null, e.getMessage());
+                                }
                             }
+                            break;
                     }
                     break;
 
