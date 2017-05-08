@@ -5,17 +5,13 @@ package Roteiro10;
  * @author gmnun
  */
 public class Endereco {
-    private String logradouro, cidade, estado;
-    private int numero;
+    private String logradouro, cidade, estado, numero;
 
     public Endereco(){
-        logradouro = "";
-        cidade = "";
-        estado = "";
-        numero = 0;
+        this("","","","");
     }
 
-    public Endereco(String logradouro, String cidade, String estado, int numero) {
+    public Endereco(String logradouro, String cidade, String estado, String numero) {
         this.logradouro = logradouro;
         this.cidade = cidade;
         this.estado = estado;
@@ -31,7 +27,7 @@ public class Endereco {
     public String getLogradouro() {
         return logradouro;
     }
-    public int getNumero() {
+    public String getNumero() {
         return numero;
     }
 
@@ -44,7 +40,7 @@ public class Endereco {
     public void setLogradouro(String logradouro) {
         this.logradouro = logradouro;
     }
-    public void setNumero(int numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 

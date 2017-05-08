@@ -6,7 +6,7 @@ import javax.swing.JOptionPane;
  * @author gmnun
  */
 public class SistemaCtrlE {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{        
         SistemaInscricoes ctrlE = new SistemaInscricoesList();
         boolean parar = false;
         while(!parar){
@@ -40,7 +40,7 @@ public class SistemaCtrlE {
                                     JOptionPane.showInputDialog("E-Mail: "), 
                                     JOptionPane.showInputDialog("Instituição: "), 
                                     new Endereco(JOptionPane.showInputDialog("Logradouro: "), JOptionPane.showInputDialog("Cidade: "),
-                                            JOptionPane.showInputDialog("Estado: "), Integer.parseInt(JOptionPane.showInputDialog("Número: ")))));
+                                            JOptionPane.showInputDialog("Estado: "), JOptionPane.showInputDialog("Número: "))));
                             break;
                         
                         case "2":

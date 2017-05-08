@@ -27,8 +27,13 @@ public class Minicurso {
         return tituloMinicurso;
     }
     
-    public void addParticipante(Participante i){
+    public void addParticipante(Participante i) throws Exception{
         if(this.participantes.size() < this.maxParticipantes){
+            for(Participante x: this.participantes){
+                if(i.getEmail().equals(x.getEmail())){
+                    throw new ParticipanteJaExistenteException("Já existe um participante com o e-mail: " + i.getEmail());
+                }
+            }
             this.participantes.add(i);
         }
     }
