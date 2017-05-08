@@ -32,24 +32,23 @@ public class SistemaCtrlE {
                             break;
 
                         case "2":
-                                try {
-                                    ctrlE.inscreveParticipanteEmMinicurso(JOptionPane.showInputDialog("E-mail do participante:"), JOptionPane.showInputDialog("Título do Minicurso:"));
-                                    
-                                } catch (ParticipanteJaExistenteException | ParticipanteNaoExistenteException | MinicursoNaoExisteException e) {
-                                    JOptionPane.showMessageDialog(null, e.getMessage());
-                                }
+                            try {
+                                ctrlE.inscreveParticipanteEmMinicurso(JOptionPane.showInputDialog("E-mail do participante:"), JOptionPane.showInputDialog("Título do Minicurso:"));
+
+                            } catch (ParticipanteJaExistenteException | ParticipanteNaoExistenteException | MinicursoNaoExisteException e) {
+                                JOptionPane.showMessageDialog(null, e.getMessage());
+                            }
                             break;
 
                         case "3":
-                            while (true) {
-                                try {
-                                    Minicurso x = ctrlE.pesquisarMinicurso(JOptionPane.showInputDialog("Título do Minicurso:"));
-                                    JOptionPane.showMessageDialog(null, "Título: " + x.getTitulo() + "\nNúmero de Participantes: " + x.getParticipantes().size());
-                                    break;
-                                } catch (MinicursoNaoExisteException e) {
-                                    JOptionPane.showMessageDialog(null, e.getMessage());
-                                }
+                            try {
+                                Minicurso x = ctrlE.pesquisarMinicurso(JOptionPane.showInputDialog("Título do Minicurso:"));
+                                JOptionPane.showMessageDialog(null, "Título: " + x.getTitulo() + "\nNúmero de Participantes: " + x.getParticipantes().size());
+                                break;
+                            } catch (MinicursoNaoExisteException e) {
+                                JOptionPane.showMessageDialog(null, e.getMessage());
                             }
+
                             break;
                     }
                     break;
@@ -86,25 +85,23 @@ public class SistemaCtrlE {
                             break;
 
                         case "4":
-                            while (true) {
-                                try {
-                                    JOptionPane.showMessageDialog(null, ctrlE.pesquisaParticipante(JOptionPane.showInputDialog("E-mail:")).toString());
-                                    break;
-                                } catch (ParticipanteNaoExistenteException e) {
-                                    JOptionPane.showMessageDialog(null, e.getMessage());
-                                }
+                            try {
+                                JOptionPane.showMessageDialog(null, ctrlE.pesquisaParticipante(JOptionPane.showInputDialog("E-mail:")).toString());
+                                break;
+                            } catch (ParticipanteNaoExistenteException e) {
+                                JOptionPane.showMessageDialog(null, e.getMessage());
                             }
+
                             break;
 
                         case "5":
-                            while (true) {
-                                try {
-                                    ctrlE.removeParticipante(JOptionPane.showInputDialog("E-mail:"));
-                                    break;
-                                } catch (ParticipanteNaoExistenteException e) {
-                                    JOptionPane.showMessageDialog(null, e.getMessage());
-                                }
+                            try {
+                                ctrlE.removeParticipante(JOptionPane.showInputDialog("E-mail:"));
+                                break;
+                            } catch (ParticipanteNaoExistenteException e) {
+                                JOptionPane.showMessageDialog(null, e.getMessage());
                             }
+
                             break;
                     }
                     break;
