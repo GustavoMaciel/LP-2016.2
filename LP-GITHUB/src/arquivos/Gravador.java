@@ -12,7 +12,7 @@ public class Gravador {
     public Gravador(){
         
     }
-    public List<String> recuperaTexteDeArquivo(String nome) throws IOException{
+    public List<String> recuperaTextoDeArquivo(String nome) throws IOException{
         BufferedReader leitor = null;
         List<String> textoLido = new ArrayList<>();
         try{

@@ -5,7 +5,7 @@ public class Agenda {
     private Contato[] contatos;
     private int numContatos;
     private static final int MAX_CONT = 100;
-
+    
     public Agenda() {
         this.contatos = new Contato[MAX_CONT];
         this.numContatos = 0;

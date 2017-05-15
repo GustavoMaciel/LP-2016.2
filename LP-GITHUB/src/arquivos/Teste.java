@@ -14,11 +14,12 @@ public class Teste {
         Gravador grav = new Gravador();
         List<String> lista = new ArrayList<>();
         try {
-            lista.add("Olá");
-            lista.add("Tudo bem?");
-            grav.gravaTextoEmArquivo(lista, "teste");
+            for(byte i =0; i < 7; i++){
+            lista.add("Testando " + (i+1));
+            }
+            grav.gravaTextoEmArquivo(lista, "teste.txt");
         }catch(IOException e){
-            System.out.println(e.getMessage());
+            e.printStackTrace();
         }
     }
 
