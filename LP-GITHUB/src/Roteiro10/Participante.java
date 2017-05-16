@@ -1,5 +1,8 @@
 package Roteiro10;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  *
  * @author gmnun
@@ -53,5 +56,16 @@ public class Participante {
         return "Nome: " + nome + "; E-mail: " + email + "; Instituição: " + instituicao + "; Endereço: " + endereco;
     }
     
+    public List<String> toStringArray(){
+        List<String> a = new LinkedList<>();
+        a.add(nome);
+        a.add(email);
+        a.add(instituicao);
+        a.add(endereco.getCidade());
+        a.add(endereco.getEstado());
+        a.add(endereco.getLogradouro());
+        a.add(endereco.getNumero());
+        return a;
+    }
     
 }

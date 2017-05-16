@@ -16,4 +16,5 @@ public interface SistemaInscricoes {
     public Minicurso pesquisarMinicurso(String titulo) throws MinicursoNaoExisteException;
     public List<Minicurso> getMinicursos();
     public List<Participante> getParticipantes();
+    public List<String> nomesToString() throws Exception;
 }

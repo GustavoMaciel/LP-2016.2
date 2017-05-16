@@ -1,6 +1,9 @@
 package Roteiro10;
 
 import javax.swing.JOptionPane;
+import arquivos.Gravador;
+import java.io.IOException;
+import java.util.List;
 
 /**
  *
@@ -9,7 +12,21 @@ import javax.swing.JOptionPane;
 public class SistemaCtrlE {
 
     public static void main(String[] args) throws Exception {
+        Gravador arq = new Gravador();
         SistemaInscricoes ctrlE = new SistemaInscricoesList();
+        
+        //Ler Participantes
+        try{
+        for(String i: arq.recuperaTextoDeArquivo("src/Roteiro10/Part/nomesParticipantes.txt")){
+            String nameTxt = "src/Roteiro10/Part/" + i + ".txt";
+            List<String> info = arq.recuperaTextoDeArquivo(nameTxt);
+            ctrlE.addParticipante(new Participante(info.get(0), info.get(1), info.get(2), new Endereco(info.get(3), info.get(4),
+            info.get(5), info.get(6))));
+        }}catch(Exception e){
+            System.out.println("Tamo carregando parça");
+        }       
+        //
+        
         boolean parar = false;
         while (!parar) {
             String opc = JOptionPane.showInputDialog("[~] Menu Ctrl+E\n\n[1] Menu Minicurso\n[2] Menu Participante\n[x] Sair");
@@ -107,7 +124,27 @@ public class SistemaCtrlE {
                     break;
 
                 case "x":
+
                     parar = true;
+
+                    //Salvar participantes
+                    
+                    for (Participante i : ctrlE.getParticipantes()) {
+                        String nomeTxt = "src/Roteiro10/Part/";
+                        try {
+                            arq.gravaTextoEmArquivo(i.toStringArray(), nomeTxt + i.getNome() + ".txt");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                    
+                    try{
+                        arq.gravaTextoEmArquivo(ctrlE.nomesToString(), "src/Roteiro10/Part/nomesParticipantes.txt");
+                    }catch(IOException e){
+                        e.printStackTrace();
+                    }
+
                     break;
 
                 default:
