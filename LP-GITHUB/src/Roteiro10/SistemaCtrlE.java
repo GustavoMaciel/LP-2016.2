@@ -2,6 +2,7 @@ package Roteiro10;
 
 import javax.swing.JOptionPane;
 import arquivos.Gravador;
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,14 +31,14 @@ public class SistemaCtrlE {
         //
 
         // Ler Minicursos
-        try{
-            for(String i: arq.recuperaTextoDeArquivo("src/Roteiro10/Mini/titulosMinicursos.txt")){
+        try {
+            for (String i : arq.recuperaTextoDeArquivo("src/Roteiro10/Mini/titulosMinicursos.txt")) {
                 String titTxt = "src/Roteiro10/Mini/" + i + ".txt";
                 List<String> infoMi = arq.recuperaTextoDeArquivo(titTxt);
                 List<String> Emailpart = arq.recuperaTextoDeArquivo("src/Roteiro10/Mini/" + i + "Participantes.txt");
                 List<Participante> participantes = new LinkedList<>();
                 int j = 0;
-                for(String x: Emailpart){
+                for (String x : Emailpart) {
                     participantes.add(ctrlE.pesquisaParticipante(Emailpart.get(j)));
                     j++;
                 }
@@ -45,7 +46,7 @@ public class SistemaCtrlE {
                 a.setParticipantes(participantes);
                 ctrlE.addMinicurso(a);
             }
-        }catch(Exception e){
+        } catch (Exception e) {
             System.err.println(e.getMessage());;
         }
         //
@@ -135,7 +136,15 @@ public class SistemaCtrlE {
 
                         case "5":
                             try {
-                                ctrlE.removeParticipante(JOptionPane.showInputDialog("E-mail:"));
+                                String email = JOptionPane.showInputDialog("E-mail:");
+                                String nome = ctrlE.pesquisaParticipante(email).getNome();
+                                try {
+                                    File remover = new File("src/Roteiro10/Part/" + nome + ".txt");
+                                    remover.delete();
+                                    ctrlE.removeParticipante(email);
+                                } catch (Exception e) {
+                                    ctrlE.removeParticipante(email);
+                                }
                                 break;
                             } catch (ParticipanteNaoExistenteException e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
@@ -148,8 +157,8 @@ public class SistemaCtrlE {
                 case "x":
 
                     parar = true;
-
-                    //Salvar participantes
+                    
+                    //Salvar participantes                    
                     for (Participante i : ctrlE.getParticipantes()) {
                         String nomeTxt = "src/Roteiro10/Part/";
                         try {
@@ -157,7 +166,6 @@ public class SistemaCtrlE {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                     }
 
                     try {
@@ -176,10 +184,10 @@ public class SistemaCtrlE {
                             e.printStackTrace();
                         }
                     }
-                    
-                    try{
+
+                    try {
                         arq.gravaTextoEmArquivo(ctrlE.titulosToString(), "src/Roteiro10/Mini/titulosMinicursos.txt");
-                    }catch (IOException e){
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
 
