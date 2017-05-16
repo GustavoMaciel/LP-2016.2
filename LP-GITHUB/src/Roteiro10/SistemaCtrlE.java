@@ -3,6 +3,7 @@ package Roteiro10;
 import javax.swing.JOptionPane;
 import arquivos.Gravador;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -14,19 +15,40 @@ public class SistemaCtrlE {
     public static void main(String[] args) throws Exception {
         Gravador arq = new Gravador();
         SistemaInscricoes ctrlE = new SistemaInscricoesList();
-        
+
         //Ler Participantes
-        try{
-        for(String i: arq.recuperaTextoDeArquivo("src/Roteiro10/Part/nomesParticipantes.txt")){
-            String nameTxt = "src/Roteiro10/Part/" + i + ".txt";
-            List<String> info = arq.recuperaTextoDeArquivo(nameTxt);
-            ctrlE.addParticipante(new Participante(info.get(0), info.get(1), info.get(2), new Endereco(info.get(3), info.get(4),
-            info.get(5), info.get(6))));
-        }}catch(Exception e){
-            System.out.println("Tamo carregando parça");
-        }       
+        try {
+            for (String i : arq.recuperaTextoDeArquivo("src/Roteiro10/Part/nomesParticipantes.txt")) {
+                String nameTxt = "src/Roteiro10/Part/" + i + ".txt";
+                List<String> info = arq.recuperaTextoDeArquivo(nameTxt);
+                ctrlE.addParticipante(new Participante(info.get(0), info.get(1), info.get(2), new Endereco(info.get(3), info.get(4),
+                        info.get(5), info.get(6))));
+            }
+        } catch (Exception e) {
+            System.out.println("Sem participantes");;
+        }
         //
-        
+
+        // Ler Minicursos
+        try{
+            for(String i: arq.recuperaTextoDeArquivo("src/Roteiro10/Mini/titulosMinicursos.txt")){
+                String titTxt = "src/Roteiro10/Mini/" + i + ".txt";
+                List<String> infoMi = arq.recuperaTextoDeArquivo(titTxt);
+                List<String> Emailpart = arq.recuperaTextoDeArquivo("src/Roteiro10/Mini/" + i + "Participantes.txt");
+                List<Participante> participantes = new LinkedList<>();
+                int j = 0;
+                for(String x: Emailpart){
+                    participantes.add(ctrlE.pesquisaParticipante(Emailpart.get(j)));
+                    j++;
+                }
+                Minicurso a = new Minicurso(infoMi.get(0), Integer.parseInt(infoMi.get(1)));
+                a.setParticipantes(participantes);
+                ctrlE.addMinicurso(a);
+            }
+        }catch(Exception e){
+            System.err.println(e.getMessage());;
+        }
+        //
         boolean parar = false;
         while (!parar) {
             String opc = JOptionPane.showInputDialog("[~] Menu Ctrl+E\n\n[1] Menu Minicurso\n[2] Menu Participante\n[x] Sair");
@@ -128,7 +150,6 @@ public class SistemaCtrlE {
                     parar = true;
 
                     //Salvar participantes
-                    
                     for (Participante i : ctrlE.getParticipantes()) {
                         String nomeTxt = "src/Roteiro10/Part/";
                         try {
@@ -138,10 +159,27 @@ public class SistemaCtrlE {
                         }
 
                     }
+
+                    try {
+                        arq.gravaTextoEmArquivo(ctrlE.nomesToString(), "src/Roteiro10/Part/nomesParticipantes.txt");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    //Salvar minicursos
+                    for (Minicurso i : ctrlE.getMinicursos()) {
+                        String tituloTxt = "src/Roteiro10/Mini/";
+                        try {
+                            arq.gravaTextoEmArquivo(i.toStringArray(), tituloTxt + i.getTitulo() + ".txt");
+                            arq.gravaTextoEmArquivo(i.ParticipantesToStringArray(), tituloTxt + i.getTitulo() + "Participantes.txt");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     
                     try{
-                        arq.gravaTextoEmArquivo(ctrlE.nomesToString(), "src/Roteiro10/Part/nomesParticipantes.txt");
-                    }catch(IOException e){
+                        arq.gravaTextoEmArquivo(ctrlE.titulosToString(), "src/Roteiro10/Mini/titulosMinicursos.txt");
+                    }catch (IOException e){
                         e.printStackTrace();
                     }
 

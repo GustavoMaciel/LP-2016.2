@@ -17,4 +17,5 @@ public interface SistemaInscricoes {
     public List<Minicurso> getMinicursos();
     public List<Participante> getParticipantes();
     public List<String> nomesToString() throws Exception;
+    public List<String> titulosToString() throws Exception;
 }

@@ -61,9 +61,9 @@ public class Participante {
         a.add(nome);
         a.add(email);
         a.add(instituicao);
+        a.add(endereco.getLogradouro());
         a.add(endereco.getCidade());
         a.add(endereco.getEstado());
-        a.add(endereco.getLogradouro());
         a.add(endereco.getNumero());
         return a;
     }

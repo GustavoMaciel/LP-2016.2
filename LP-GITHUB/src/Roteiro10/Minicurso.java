@@ -17,6 +17,11 @@ public class Minicurso {
         this.maxParticipantes = max;
     }
 
+    public void setParticipantes(List<Participante> participantes) {
+        this.participantes = participantes;
+    }
+
+    
     public List<Participante> getParticipantes() {
         return participantes;
     }
@@ -37,5 +42,17 @@ public class Minicurso {
             this.participantes.add(i);
         }
     }
-    
+    public List<String> ParticipantesToStringArray(){
+        List<String> a = new LinkedList<>();
+        this.participantes.forEach((i) -> {
+            a.add(i.getEmail());
+        });
+        return a;
+    }
+    public List<String> toStringArray(){
+        List<String> a = new LinkedList<>();
+        a.add(tituloMinicurso);
+        a.add(String.valueOf(maxParticipantes));
+        return a;
+    }
 }

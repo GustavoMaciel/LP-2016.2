@@ -117,7 +117,7 @@ public class SistemaInscricoesList implements SistemaInscricoes {
 
     @Override
     public List<String> nomesToString() throws Exception {
-        if(this.participantes.isEmpty()){
+        if (this.participantes.isEmpty()) {
             throw new Exception("Não há participantes");
         }
         List<String> a = new LinkedList<>();
@@ -126,5 +126,17 @@ public class SistemaInscricoesList implements SistemaInscricoes {
         });
         return a;
     }
-    
+
+    @Override
+    public List<String> titulosToString() throws Exception {
+        if (this.minicursos.isEmpty()) {
+            throw new Exception("Não há participantes");
+        }
+        List<String> a = new LinkedList<>();
+        this.minicursos.forEach((i) -> {
+            a.add(i.getTitulo());
+        });
+        return a;
+    }
+
 }
