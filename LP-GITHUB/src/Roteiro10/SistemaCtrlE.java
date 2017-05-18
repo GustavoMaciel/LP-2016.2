@@ -16,6 +16,8 @@ public class SistemaCtrlE {
     public static void main(String[] args) throws Exception {
         Gravador arq = new Gravador();
         SistemaInscricoes ctrlE = new SistemaInscricoesList();
+        boolean atualizarPart = false;
+        boolean atualizarMini = false;
 
         //Ler Participantes
         try {
@@ -69,6 +71,7 @@ public class SistemaCtrlE {
                                     JOptionPane.showMessageDialog(null, "Você é burro é cara? mandando letra pra um número!");
                                 }
                             }
+                            atualizarMini = true;
                             break;
 
                         case "2":
@@ -78,6 +81,7 @@ public class SistemaCtrlE {
                             } catch (ParticipanteJaExistenteException | ParticipanteNaoExistenteException | MinicursoNaoExisteException e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
                             }
+                            atualizarMini = true;
                             break;
 
                         case "3":
@@ -88,8 +92,10 @@ public class SistemaCtrlE {
                             } catch (MinicursoNaoExisteException e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
                             }
-
                             break;
+
+                        default:
+                            JOptionPane.showMessageDialog(null, "Opção Inválida!");
                     }
                     break;
 
@@ -110,17 +116,18 @@ public class SistemaCtrlE {
                                     JOptionPane.showMessageDialog(null, e.getMessage());
                                 }
                             }
+                            atualizarPart = true;
                             break;
 
                         case "2":
                             ctrlE.pesquisaParticipantesDoEstado(JOptionPane.showInputDialog("Estado: ")).forEach((i) -> {
-                                JOptionPane.showMessageDialog(null, i.getNome());
+                                JOptionPane.showMessageDialog(null, i.getNome() + "\n" + i.getEmail());
                             });
                             break;
 
                         case "3":
                             ctrlE.pesquisaParticipantesDaInstituicao(JOptionPane.showInputDialog("Instituição: ")).forEach((i) -> {
-                                JOptionPane.showMessageDialog(null, i.getNome());
+                                JOptionPane.showMessageDialog(null, i.getNome() + "\n" + i.getEmail());
                             });
                             break;
 
@@ -145,55 +152,61 @@ public class SistemaCtrlE {
                                 } catch (Exception e) {
                                     ctrlE.removeParticipante(email);
                                 }
+                                JOptionPane.showMessageDialog(null, "Participante removido!");
                                 break;
                             } catch (ParticipanteNaoExistenteException e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
                             }
-
+                            atualizarPart = true;
                             break;
+
+                        default:
+                            JOptionPane.showMessageDialog(null, "Opção inválida!");
                     }
                     break;
 
                 case "x":
-
                     parar = true;
+                    if (atualizarPart) {
+                        //Salvar participantes                    
+                        for (Participante i : ctrlE.getParticipantes()) {
+                            String nomeTxt = "src/Roteiro10/Part/";
+                            try {
+                                arq.gravaTextoEmArquivo(i.toStringArray(), nomeTxt + i.getNome() + ".txt");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        try {
+                            arq.gravaTextoEmArquivo(ctrlE.nomesToString(), "src/Roteiro10/Part/nomesParticipantes.txt");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (atualizarMini) {
+                        //Salvar minicursos
+                        for (Minicurso i : ctrlE.getMinicursos()) {
+                            String tituloTxt = "src/Roteiro10/Mini/";
+                            try {
+                                arq.gravaTextoEmArquivo(i.toStringArray(), tituloTxt + i.getTitulo() + ".txt");
+                                arq.gravaTextoEmArquivo(i.ParticipantesToStringArray(), tituloTxt + i.getTitulo() + "Participantes.txt");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        try {
+                            arq.gravaTextoEmArquivo(ctrlE.titulosToString(), "src/Roteiro10/Mini/titulosMinicursos.txt");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     
-                    //Salvar participantes                    
-                    for (Participante i : ctrlE.getParticipantes()) {
-                        String nomeTxt = "src/Roteiro10/Part/";
-                        try {
-                            arq.gravaTextoEmArquivo(i.toStringArray(), nomeTxt + i.getNome() + ".txt");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    try {
-                        arq.gravaTextoEmArquivo(ctrlE.nomesToString(), "src/Roteiro10/Part/nomesParticipantes.txt");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    //Salvar minicursos
-                    for (Minicurso i : ctrlE.getMinicursos()) {
-                        String tituloTxt = "src/Roteiro10/Mini/";
-                        try {
-                            arq.gravaTextoEmArquivo(i.toStringArray(), tituloTxt + i.getTitulo() + ".txt");
-                            arq.gravaTextoEmArquivo(i.ParticipantesToStringArray(), tituloTxt + i.getTitulo() + "Participantes.txt");
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    try {
-                        arq.gravaTextoEmArquivo(ctrlE.titulosToString(), "src/Roteiro10/Mini/titulosMinicursos.txt");
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
                     break;
 
                 default:
+                    JOptionPane.showMessageDialog(null, "Opção inválida!");
                     break;
             }
         }
