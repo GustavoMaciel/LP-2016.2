@@ -15,12 +15,10 @@ public class SistemaCtrlE {
     public static void main(String[] args) throws Exception {
         GravadorDeParticipantes arq = new GravadorDeParticipantes();
         SistemaInscricoes ctrlE = new SistemaInscricoesList();
-        boolean atualizarPart = false;
-        boolean atualizarMini = false;
 
         boolean parar = false;
         while (!parar) {
-            String opc = JOptionPane.showInputDialog("[~] Menu Ctrl+E\n\n[1] Menu Minicurso\n[2] Menu Participante\n[4] Carregar Participantes\n[5] Salvar Participantes\n[x] Sair");
+            String opc = JOptionPane.showInputDialog("[~] Menu Ctrl+E\n\n[1] Menu Minicurso\n[2] Menu Participante\n[3] Carregar Dados\n[4] Salvar Dados\n[x] Sair");
             switch (opc) {
                 case "1":
                     String menuMini = JOptionPane.showInputDialog("[~] Menu Minicurso\n\n[1] Adicionar Minicurso\n"
@@ -37,7 +35,6 @@ public class SistemaCtrlE {
                                     JOptionPane.showMessageDialog(null, "Você é burro é cara? mandando letra pra um número!");
                                 }
                             }
-                            atualizarMini = true;
                             break;
 
                         case "2":
@@ -47,7 +44,6 @@ public class SistemaCtrlE {
                             } catch (ParticipanteJaExistenteException | ParticipanteNaoExistenteException | MinicursoNaoExisteException e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
                             }
-                            atualizarMini = true;
                             break;
 
                         case "3":
@@ -60,6 +56,9 @@ public class SistemaCtrlE {
                             }
                             break;
 
+                        case "x":
+                            break;
+
                         default:
                             JOptionPane.showMessageDialog(null, "Opção Inválida!");
                     }
@@ -67,7 +66,7 @@ public class SistemaCtrlE {
 
                 case "2":
                     String menuPart = JOptionPane.showInputDialog("[~] Menu Participantes\n\n[1] Adicionar Participante\n"
-                            + "[2] Participantes do Estado\n[3] Participantes da Instituição\n[4] Pesquisar Participante\n[5]Lista de Participantes\n[6] Remover Participante\n[x] Sair");
+                            + "[2] Participantes do Estado\n[3] Participantes da Instituição\n[4] Pesquisar Participante\n[5] Listar Participantes\n[6] Remover Participante\n[x] Sair");
                     switch (menuPart) {
                         case "1":
                             while (true) {
@@ -82,7 +81,6 @@ public class SistemaCtrlE {
                                     JOptionPane.showMessageDialog(null, e.getMessage());
                                 }
                             }
-                            atualizarPart = true;
                             break;
 
                         case "2":
@@ -108,7 +106,12 @@ public class SistemaCtrlE {
                             break;
 
                         case "5":
-                            for (Participante i : ctrlE.getParticipantes()) {
+                            List<Participante> abc = ctrlE.getParticipantes();
+                            if (abc.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "Não há participantes!");
+                                break;
+                            }
+                            for (Participante i : abc) {
                                 JOptionPane.showMessageDialog(null, "Nome: " + i.getNome() + "\nE-Mail: " + i.getEmail());
                             }
                             break;
@@ -129,7 +132,9 @@ public class SistemaCtrlE {
                             } catch (ParticipanteNaoExistenteException e) {
                                 JOptionPane.showMessageDialog(null, e.getMessage());
                             }
-                            atualizarPart = true;
+                            break;
+
+                        case "x":
                             break;
 
                         default:
@@ -147,7 +152,7 @@ public class SistemaCtrlE {
                                     info.get(5), info.get(6))));
                         }
                     } catch (Exception e) {
-                        System.out.println("Sem participantes");;
+                        continue;
                     }
                     //
 
@@ -165,14 +170,19 @@ public class SistemaCtrlE {
                             }
                             Minicurso a = new Minicurso(infoMi.get(0), Integer.parseInt(infoMi.get(1)));
                             a.setParticipantes(participantes);
-                            ctrlE.addMinicurso(a);
+                            try {
+                                ctrlE.addMinicurso(a);
+                            } catch (MinicursoJaExisteException e) {
+                                continue;
+                            }
                         }
                     } catch (Exception e) {
-                        System.err.println(e.getMessage());;
+                        continue;
                     }
                     //
-
+                    JOptionPane.showMessageDialog(null, "Dados carregados com sucesso!");
                     break;
+
                 case "4":
                     //Salvar participantes                    
                     for (Participante i : ctrlE.getParticipantes()) {
@@ -190,24 +200,23 @@ public class SistemaCtrlE {
                         e.printStackTrace();
                     }
 
-                    if (atualizarMini) {
-                        //Salvar minicursos
-                        for (Minicurso i : ctrlE.getMinicursos()) {
-                            String tituloTxt = "src/Roteiro10/Mini/";
-                            try {
-                                arq.gravaTextoEmArquivo(i.toStringArray(), tituloTxt + i.getTitulo() + ".txt");
-                                arq.gravaTextoEmArquivo(i.ParticipantesToStringArray(), tituloTxt + i.getTitulo() + "Participantes.txt");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
+                    //Salvar minicursos
+                    for (Minicurso i : ctrlE.getMinicursos()) {
+                        String tituloTxt = "src/Roteiro10/Mini/";
                         try {
-                            arq.gravaTextoEmArquivo(ctrlE.titulosToString(), "src/Roteiro10/Mini/titulosMinicursos.txt");
+                            arq.gravaTextoEmArquivo(i.toStringArray(), tituloTxt + i.getTitulo() + ".txt");
+                            arq.gravaTextoEmArquivo(i.ParticipantesToStringArray(), tituloTxt + i.getTitulo() + "Participantes.txt");
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
+
+                    try {
+                        arq.gravaTextoEmArquivo(ctrlE.titulosToString(), "src/Roteiro10/Mini/titulosMinicursos.txt");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    JOptionPane.showMessageDialog(null, "Dados salvos com sucesso!");
                     break;
                 case "x":
                     parar = true;
